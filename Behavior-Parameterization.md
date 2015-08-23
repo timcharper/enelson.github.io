@@ -10,6 +10,8 @@ Behavior parameterization is far less scary than it sounds. It espouses the same
 public <T> T doWork(T obj);
 ```
 
+Here, `doWork()` can take any user-defined type, because the type has no bearing on the behavior of the method. A good example of this is the `List<T>` type. A list's behavior works the same no matter what type it contains. So it doesn't make sense for the writer of List to hard-code what the list can contain. Let the consumer of `List` define that later.
+
 ### Correlation
 
 To broach the subject of behavior parameterization, let's start with a simple example. Lets say we have a class called `AnimalContainer` which contains many types of animals. We may want to have a simple method called `filter()` that allows us to filter out certain types of animals.
