@@ -92,7 +92,7 @@ List<Animal> filteredAnimals = container.filter(new Predicate<Animal>() {
 });
 ```
 
-This is how the consumer can create custom predicates on the fly, and in any combination. And, if could also create reusable filters by assigning predicates to variables:
+This is how the consumer can create custom predicates on the fly, and in any combination. And, they could also create reusable filters by assigning predicates to variables:
 
 ```
 Predicate<Animal> lightCatsFilter = new Predicate<Animal>() {
