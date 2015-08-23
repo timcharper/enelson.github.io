@@ -18,7 +18,7 @@ Here, `doWork()` can take any user-defined type, because the type has no bearing
 
 To broach the subject of behavior parameterization, let's start with a simple example. Lets say we have a class called `AnimalContainer` which contains many types of animals. We may want to have a simple method called `filter()` that allows us to filter out certain types of animals.
 
-```
+```java
 public class AnimalContainer {
     private List<Animal> animals;
 
@@ -35,7 +35,7 @@ public class AnimalContainer {
 
 The filter method is great, except for the fact that it is completely inflexible.  What if you wanted to filter out dogs that were below a certain weight? Write another method with like this:
 
-```
+```java
 public List<Animal> filter(int weight) {
     List<Animal> results = new ArrayList<>();
     for(Animal animal : animals) {
@@ -62,11 +62,13 @@ You may not realize it, but you've already been using functional interfaces. Som
 
 In order to look for a better definition of our `filter()` method, we're going to focus on the `Predicate<T>` interface. This interface has a single non-default and non-static method defined as: 
 
-`boolean test(T t);`
+```java
+boolean test(T t);
+```
 
 Very simply put, this method says: Given a value of type `T`, check that this value matches some form of a predicate (or filter test), and respond with `true` or `false`. Well, this sounds exactly like what we'd want in our `filter()` method. Given some predicate that the **user** defines (emphasis on user-defined), return all objects that match this predicate. Now, if properly implemented, the user can give us their predicate requirements and we will simply pass out all animals that match it. **Wonderful**!. Let's take a stab at our new method definition:
 
-```
+```java
 public List<Animal> filter(Predicate<Animal> pred) {
     List<Animal> results = new ArrayList<>();
 
@@ -81,7 +83,7 @@ public List<Animal> filter(Predicate<Animal> pred) {
 
 Wow! Talk about powerful! Now, the user can pass in any type of filtering logic they wish, and our simple, generic and non-complex `filter()` method can accommodate any of it. This is exactly the type of power that behavior parameterization allows. So, what would the use of this filter look like?
 
-```
+```java
 AnimalContainer container = ...
 List<Animal> filteredAnimals = container.filter(new Predicate<Animal>() {
     @Override
@@ -96,7 +98,7 @@ List<Animal> filteredAnimals = container.filter(new Predicate<Animal>() {
 
 This is how the consumer can create custom predicates on the fly, and in any combination. And, they could also create reusable filters by assigning predicates to variables:
 
-```
+```java
 Predicate<Animal> lightCatsFilter = new Predicate<Animal>() {
     @Override
     boolean test(Animal animal) {
@@ -122,7 +124,7 @@ List<Animal> lightCats = container.filter(lightCatsFilter);
 
 Now the consumer can create powerful, reusable and composable filters. You might ask: How can filters compose? (Okay, you probably didn't ask that, but I'm going to explain it anyway). In the `Predicate` definition there are a couple default methods called `and` and `or`. This allows one to compose predicates in any combination that they'd like. For example:
 
-```
+```java
 Predicate<Animal> heavyDogsFilter = ...
 Predicate<Animal> brownDogsFilter = ...
 Predicate<Animal> heavyAndBrownDogsFilter = heavyDogsFilter.and(brownDogsFilter);
@@ -140,7 +142,7 @@ This is all well and good. We've started to see the power of behavior parameteri
 
 Lambda expressions allow us to replace the verbose anonymous class definitions with a succinct expression. Back to why functional interfaces are important: lambda expressions can't be used just anywhere in Java. They can only be used in place of an anonymous class definition for a functional interface. The reason that they need to be used in conjunction with functional interfaces is that the compiler wouldn't know what method the lambda expression was replacing if there were several methods with the same signature. What if an interface had two methods that looked like this:
 
-```
+```java
 public boolean passes(T t);
 public boolean notPasses(T t);
 ```
@@ -149,7 +151,7 @@ The compiler would have no indication which method the lambda expression was mea
 
 Okay, enough talking! What do lambdas look like? Here is what our new use of the filter method could look like:
 
-```
+```java
 AnimalContainer container = ...
 List<Animal> filteredAnimals = container.filter(
     animal -> {
