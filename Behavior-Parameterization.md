@@ -71,12 +71,10 @@ Very simply put, this method says: Given a value of type `T`, check that this va
 ```java
 public List<Animal> filter(Predicate<Animal> pred) {
     List<Animal> results = new ArrayList<>();
-
     for(Animal animal : animals) {
         if(pred.test(animal))
             results.add(animal);
     }
-
     return results;
 }
 ```
