@@ -23,7 +23,7 @@ public class AnimalContainer {
     public List<Animal> filter() {
         List<Animal> results = new ArrayList<>();
         for(Animal animal : animals) {
-            if(animal.getType() == 'Dog')
+            if(animal.getType() == DOG) // Let's assume that type is an enum
                 results.add(animal);
         }
         return results;
@@ -77,7 +77,7 @@ AnimalContainer container = ...
 List<Animal> filteredAnimals = container.filter(new Predicate<Animal>() {
     @Override
     boolean test(Animal animal) {
-        if(animal.getType() == 'Dog' && animal.getWeight >= 100 && animal.getColor() == 'Brown')
+        if(animal.getType() == DOG && animal.getWeight >= 100 && animal.getColor() == BROWN)
             return true;
         else
             return false;
@@ -91,7 +91,7 @@ This is how the consumer can create custom predicates on the fly, and in any com
 Predicate<Animal> lightCatsFilter = new Predicate<Animal>() {
     @Override
     boolean test(Animal animal) {
-        if(animal.getType() == 'Cat' && animal.getWeight < 20)
+        if(animal.getType() == CAT && animal.getWeight < 20)
             return true;
         else
             return false;
@@ -101,7 +101,7 @@ Predicate<Animal> lightCatsFilter = new Predicate<Animal>() {
 Predicate<Animal> heavyBrownDogsFilter = new Predicate<Animal>() {
     @Override
     boolean test(Animal animal) {
-        if(animal.getType() == 'Dog' && animal.getWeight >= 100 && animal.getColor() == 'Brown')
+        if(animal.getType() == DOG && animal.getWeight >= 100 && animal.getColor() == BROWN)
             return true;
         else
             return false;
@@ -142,7 +142,7 @@ Okay, enough talking! What do lambdas look like? Here is what our new use of the
 AnimalContainer container = ...
 List<Animal> filteredAnimals = container.filter(
     animal -> {
-        if(animal.getType() == 'Dog' && animal.getWeight >= 100 && animal.getColor() == 'Brown')
+        if(animal.getType() == DOG && animal.getWeight >= 100 && animal.getColor() == BROWN)
             return true;
         else
             return false;
