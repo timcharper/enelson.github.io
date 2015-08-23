@@ -136,7 +136,7 @@ And voila! You can create any powerful combination of filters you'd like.
 
 ## Lambda Expressions
 
-<img src="https://keefcode.files.wordpress.com/2013/12/lambda.png" width="540" height="380"/>
+<img src="https://keefcode.files.wordpress.com/2013/12/lambda.png" width="440" height="280"/>
 
 This is all well and good. We've started to see the power of behavior parameterization by deferring the definitions and combinations of business logic to the consumer. Not only is our code cleaner by providing more generic methods, but we give the consumer the power to use it however they like. But lets go ahead and admit that the use of `Predicate<T>` anonymous classes is pretty verbose and clunky. Such has been the curse of Java for years until the advent of Java 8 and it's introduction of lambda expressions. 
 
