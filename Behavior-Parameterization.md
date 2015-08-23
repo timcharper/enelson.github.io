@@ -60,6 +60,62 @@ In order to look for a better definition of our `filter()` method, we're going t
 
 `boolean test(T t);`
 
+Very simply put, this method says: Given a value of type `T`, check that this value matches some form of a predicate, and respond with `true` or `false`. Well, this sounds exactly like what we'd want in our `filter()` method. Given some predicate that the **user** defines (emphasis on user-defined), return all objects that match this predicate. Now, if properly implemented, the user can give us their predicate requirements and we will simply pass out all animals that match it. **Wonderful**!. Let's take a stab at our new method definition:
+
+```
+public List<Animal> filter(Predicate<Animal> pred) {
+    List<Animal> results = new ArrayList<>();
+
+    for(Animal animal : animals) {
+        if(pred.test(animal))
+            results.add(animal);
+    }
+
+    return results;
+}
+```
+
+Wow! Talk about powerful! Now, the user can pass in any type of filtering logic they wish, and our simple `filter()` method can accommodate any of it. This is exactly the type of power that behavior parameterization allows. So, what would the use of this filter look like?
+
+```
+AnimalContainer container = ...
+List<Animal> filteredAnimals = container.filter(new Predicate<Animal>() {
+    @Override
+    boolean test(Animal animal) {
+        if(animal.getType() == 'Dog' && animal.getWeight >= 100 && animal.getColor() == 'Brown')
+            return true;
+        else
+            return false;
+    }
+});
+```
+
+This is how the consumer can create custom predicates on the fly, and in any combination. And, if could also create reusable filters by assigning predicates to variables:
+
+```
+Predicate<Animal> lightCats = new Predicate<Animal>() {
+    @Override
+    boolean test(Animal animal) {
+        if(animal.getType() == 'Cat' && animal.getWeight < 20)
+            return true;
+        else
+            return false;
+    }
+});
+
+Predicate<Animal> heavyBrownDogs = new Predicate<Animal>() {
+    @Override
+    boolean test(Animal animal) {
+        if(animal.getType() == 'Dog' && animal.getWeight >= 100 && animal.getColor() == 'Brown')
+            return true;
+        else
+            return false;
+    }
+});
+```
+
+Now the consumer can create powerful, reusable and composable filters.
+
 ## Lambdas
 
 ## 
