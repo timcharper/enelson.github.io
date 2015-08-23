@@ -93,7 +93,7 @@ List<Animal> filteredAnimals = container.filter(new Predicate<Animal>() {
 This is how the consumer can create custom predicates on the fly, and in any combination. And, if could also create reusable filters by assigning predicates to variables:
 
 ```
-Predicate<Animal> lightCats = new Predicate<Animal>() {
+Predicate<Animal> lightCatsFilter = new Predicate<Animal>() {
     @Override
     boolean test(Animal animal) {
         if(animal.getType() == 'Cat' && animal.getWeight < 20)
@@ -103,7 +103,7 @@ Predicate<Animal> lightCats = new Predicate<Animal>() {
     }
 });
 
-Predicate<Animal> heavyBrownDogs = new Predicate<Animal>() {
+Predicate<Animal> heavyBrownDogsFilter = new Predicate<Animal>() {
     @Override
     boolean test(Animal animal) {
         if(animal.getType() == 'Dog' && animal.getWeight >= 100 && animal.getColor() == 'Brown')
@@ -112,9 +112,21 @@ Predicate<Animal> heavyBrownDogs = new Predicate<Animal>() {
             return false;
     }
 });
+
+List<Animal> lightCats = container.filter(lightCatsFilter);
 ```
 
-Now the consumer can create powerful, reusable and composable filters.
+Now the consumer can create powerful, reusable and composable filters. You might ask: How can filters compose? In their definition they have a couple default methods called `and` and `or`. This allows one to compose predicates in any combination that they'd like. For example:
+
+```
+Predicate<Animal> heavyDogsFilter = ...
+Predicate<Animal> brownDogsFilter = ...
+Predicate<Animal> heavyAndBrownDogsFilter = heavyDogsFilter.and(brownDogsFilter);
+
+List<Animal> heavyAndBrownDogs = container.filter(heavyAndBrownDogsFilter);
+```
+
+And voila! You can create any powerful combination of filters you'd like.
 
 ## Lambdas
 
