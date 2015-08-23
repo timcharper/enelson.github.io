@@ -52,9 +52,13 @@ But how does one do this? Generics make this easy for types, but how do you put 
 
 ## Functional Interfaces
 
-A functional interface is very simple: it's just an interface with one method. Seems kind of weird right? Like a waste of typing to create an interface with just one method. But it'll soon be clear why this structure is important when we get to the section of lambda expressions. 
+A functional interface is very simple: it's just an interface with one non-default and non-static method. Seems kind of weird right? Like a waste of typing to create an interface with just one method. But it'll soon be clear why this structure is important when we get to the section of lambda expressions. 
 
-You may not realize it, but you've already been using functional interfaces without realizing it. Some examples are: `Runnable` and `Callable` to name a couple. Java 8 introduced some very important functional interfaces: `Function`, `Predicate`, `Consumer`, `Supplier` to name a few.
+You may not realize it, but you've already been using functional interfaces without realizing it. Some examples are: `Runnable` and `Callable`. Java 8 introduced some very important functional interfaces: `Function<T,R>`, `Predicate<T>`, `Consumer<T>`, `Supplier<T>` to name a few.
+
+In order to look for a better definition of our `filter()` method, we're going to focus on the `Predicate<T>` interface. This interface has a single non-default and non-static method defined as: 
+
+`boolean test(T t);`
 
 ## Lambdas
 
