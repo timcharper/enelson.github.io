@@ -118,7 +118,7 @@ Predicate<Animal> heavyBrownDogsFilter = new Predicate<Animal>() {
 List<Animal> lightCats = container.filter(lightCatsFilter);
 ```
 
-Now the consumer can create powerful, reusable and composable filters. You might ask: How can filters compose? In their definition they have a couple default methods called `and` and `or`. This allows one to compose predicates in any combination that they'd like. For example:
+Now the consumer can create powerful, reusable and composable filters. You might ask: How can filters compose? (Okay, you probably didn't ask that, but I'm going to explain it anyway). In their definition they have a couple default methods called `and` and `or`. This allows one to compose predicates in any combination that they'd like. For example:
 
 ```
 Predicate<Animal> heavyDogsFilter = ...
