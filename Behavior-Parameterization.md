@@ -62,7 +62,7 @@ In order to look for a better definition of our `filter()` method, we're going t
 
 `boolean test(T t);`
 
-Very simply put, this method says: Given a value of type `T`, check that this value matches some form of a predicate, and respond with `true` or `false`. Well, this sounds exactly like what we'd want in our `filter()` method. Given some predicate that the **user** defines (emphasis on user-defined), return all objects that match this predicate. Now, if properly implemented, the user can give us their predicate requirements and we will simply pass out all animals that match it. **Wonderful**!. Let's take a stab at our new method definition:
+Very simply put, this method says: Given a value of type `T`, check that this value matches some form of a predicate (or filter test), and respond with `true` or `false`. Well, this sounds exactly like what we'd want in our `filter()` method. Given some predicate that the **user** defines (emphasis on user-defined), return all objects that match this predicate. Now, if properly implemented, the user can give us their predicate requirements and we will simply pass out all animals that match it. **Wonderful**!. Let's take a stab at our new method definition:
 
 ```
 public List<Animal> filter(Predicate<Animal> pred) {
