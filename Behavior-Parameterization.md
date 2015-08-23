@@ -1,5 +1,7 @@
 # Behavior Parameterization
 
+![](http://geeknizer.com/wp-content/uploads/2013/07/lambda-java8.jpg)
+
 ## What it is
 
 ### Concept similar to type parameterization
