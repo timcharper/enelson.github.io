@@ -130,4 +130,31 @@ And voila! You can create any powerful combination of filters you'd like.
 
 ## Lambdas
 
+This is all well and good. We've started to see the power of behavior parameterization by differing the definitions and combinations of business logic to the consumer. Not only is our code cleaner by providing more generic methods, but we give the consumer the power to use it however they like. But lets go ahead and admit that the use `Predicate<T>` anonymous classes is pretty verbose and clunky. Such has been the curse of Java for years until the advent of Java 8 and it's introduction of lambda expressions. 
+
+Lambda expressions allow you to replace the verbose anonymous class definitions with a succinct expression. Back to why functional interfaces are important: lambda expressions can't be used just anywhere in Java. They can be used in place of an anonymous class definition for a functional interface. The reason that they need to be used in conjunction with functional interfaces is that the compiler wouldn't know what method the lambda expression was replacing if there were several methods with the same signature. What if an interface had two methods that looked like this:
+
+```
+public boolean passes(T t);
+public boolean notPasses(T t);
+```
+
+The compiler would have no indication which method the lambda expression was meant to replace. This is why they must be used with functional interfaces, defining only one non-default and non-static method. 
+
+Okay, enough talking! What do lambdas look like? Here is what our new use of the filter method could look like:
+
+```
+AnimalContainer container = ...
+List<Animal> filteredAnimals = container.filter(
+    animal -> {
+        if(animal.getType() == 'Dog' && animal.getWeight >= 100 && animal.getColor() == 'Brown')
+            return true;
+        else
+            return false;
+    }
+);
+```
+
+Umm...wow! So much better! So much more succinct. So much more readable. 
+
 ## 
