@@ -28,13 +28,6 @@ public class AnimalContainer {
         }
         return results;
     }
-
-    public List<Animal> getAnimal() {
-        return animals;
-    }
-    public void setAnimal(List<Animal> animals) {
-        this.animals = animals;
-    }
 }
 ```
 
