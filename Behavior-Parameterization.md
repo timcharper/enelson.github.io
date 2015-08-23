@@ -77,7 +77,7 @@ public List<Animal> filter(Predicate<Animal> pred) {
 }
 ```
 
-Wow! Talk about powerful! Now, the user can pass in any type of filtering logic they wish, and our simple `filter()` method can accommodate any of it. This is exactly the type of power that behavior parameterization allows. So, what would the use of this filter look like?
+Wow! Talk about powerful! Now, the user can pass in any type of filtering logic they wish, and our simple, generic and non-complex `filter()` method can accommodate any of it. This is exactly the type of power that behavior parameterization allows. So, what would the use of this filter look like?
 
 ```
 AnimalContainer container = ...
