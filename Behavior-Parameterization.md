@@ -46,6 +46,16 @@ And then later, what if someone wanted to filter out dogs of a certain weight *A
 
 Plus, what if we want to filter out animals of type 'Cat'? What will we do? Write a new method called `filterCats`? And then write more methods for cat filters with many filtering options?
 
+What would be nice is to take an approach similar to what we were doing with type parameterization where we put in a place holder and let the user fill in the details later. But in this case, they fill in the behavior. We've seen that we can't possibly think up all the scenarios that a user would need for our methods, so why not just allow them to tell us? Enter in behavior parameterization. 
+
+But how does one do this? Generics make this easy for types, but how do you put a place holder in for behavior? This is facilitated by functional interfaces. 
+
+## Functional Interfaces
+
+A functional interface is very simple: it's just an interface with one method. Seems kind of weird right? Like a waste of typing to create an interface with just one method. But it'll soon be clear why this structure is important when we get to the section of lambda expressions. 
+
+You may not realize it, but you've already been using functional interfaces without realizing it. Some examples are: `Runnable` and `Callable` to name a couple. Java 8 introduced some very important functional interfaces: `Function`, `Predicate`, `Consumer`, `Supplier` to name a few.
+
 ## Lambdas
 
 ## 
