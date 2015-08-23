@@ -31,13 +31,20 @@ public class AnimalContainer {
 }
 ```
 
-The filter method is great, except for the fact that it is completely inflexible.  What if you wanted to filter out dogs that were of a certain weight? Write another method with like this:
+The filter method is great, except for the fact that it is completely inflexible.  What if you wanted to filter out dogs that were below a certain weight? Write another method with like this:
 
 ```
-public List<Animal> filter(int weight);
+public List<Animal> filter(int weight) {
+    List<Animal> results = new ArrayList<>();
+    for(Animal animal : animals) {
+        if(animal.getType() == DOG && animal.getWeight < weight )
+            results.add(animal);
+    }
+    return results;
+}
 ```
 
-And then later, what if someone wanted to filter out dogs of a certain weight *AND* a certain color? You see where this is going. The combinations can become unwieldy and you can't resort to writing a new method each time you need more options.
+But what if someone wanted to filter if the weight was `>=` than the weight, not less than? And then later, what if someone wanted to filter out dogs of a certain weight *AND* a certain color? You see where this is going. The combinations can become unwieldy and you can't resort to writing a new method each time you need more options.
 
 Plus, what if we want to filter out animals of type 'Cat'? What will we do? Write a new method called `filterCats`? And then write more methods for cat filters with many filtering options?
 
@@ -159,4 +166,3 @@ I recently used this type of approach in some code I wrote pertaining to wrappin
 Sorry if this was a TL;DR discussion of behavioral parameterization, but I felt that the concepts written about here were important to build up to first, understanding why it's important, and then second, how you can implement it. This concept can be used in innumerable cases and in many different circumstances. And each functional interface provides different types of behavior. I would encourage you to read any articles relating to this subject as it can lead to clean, powerful, reusable, composable code. And in the end, isn't this a goal that all of us "pragmatic" programmers aspire to? 
 
 Thanks so much for taking the time to read this article, and please provide any feedback for me relating to anything that is unclear in my explanations, or anything that is wrong.
-
