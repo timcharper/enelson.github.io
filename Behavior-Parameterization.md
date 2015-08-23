@@ -48,7 +48,7 @@ But what if someone wanted to filter if the weight was `>=` than the weight, not
 
 Plus, what if we want to filter out animals of type 'Cat'? What will we do? Write a new method called `filterCats`? And then write more methods for cat filters with many filtering options?
 
-What would be nice is to take an approach similar to what we were doing with type parameterization where we put in a place holder and let the user fill in the details later. But in this case, they fill in the behavior. We've seen that we can't possibly think up all the scenarios that a user would need for our methods, so why not just allow them to tell us? Enter in behavior parameterization. 
+What would be nice is to take an approach similar to what we were doing with type parameterization where we put in a place holder for the filter behavior and let the user fill in the details later. But in this case, they fill in the behavior. We've seen that we can't possibly think up all the scenarios that a user would need for our methods, so why not just allow them to tell us? Enter in behavior parameterization. 
 
 But how does one do this? Generics make this easy for types, but how do you put a place holder in for behavior? This is facilitated by functional interfaces. 
 
