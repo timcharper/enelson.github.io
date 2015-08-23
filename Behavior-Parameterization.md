@@ -6,9 +6,6 @@
 
 ### Concept similar to type parameterization
 
-- [ ] one
-- [x] two
-
 Behavior parameterization is far less scary than it sounds. It espouses the same concepts that type parameterization does. Type parameterization (generics) is, in essence, a place holder for types in a class/method/field. The writer is saying that they don't want to define the type here, and allow the consumer to define the type later. This is the case when the class/method/field behavior doesn't rely on the type to define its behavior. So flexibility is given to the consumer to use whatever type they like, or at least within the bound of the type definition:
 
 ```java
@@ -139,7 +136,7 @@ And voila! You can create any powerful combination of filters you'd like.
 
 ## Lambda Expressions
 
-![](https://keefcode.files.wordpress.com/2013/12/lambda.png =540x380)
+<img src="https://keefcode.files.wordpress.com/2013/12/lambda.png" width="540" height="380"/>
 
 This is all well and good. We've started to see the power of behavior parameterization by deferring the definitions and combinations of business logic to the consumer. Not only is our code cleaner by providing more generic methods, but we give the consumer the power to use it however they like. But lets go ahead and admit that the use of `Predicate<T>` anonymous classes is pretty verbose and clunky. Such has been the curse of Java for years until the advent of Java 8 and it's introduction of lambda expressions. 
 
