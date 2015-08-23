@@ -157,7 +157,7 @@ List<Animal> filteredAnimals = container.filter(
 
 Umm...wow! So much better! So much more succinct. So much more readable. So the generic form of a lambda expression for a `Predicate<T>` is: `(x) -> boolean`. Another example that takes a parameter and returns a user-defined type is `Function<T,R>`, or: `(x) -> R`.
 
-I recently used this type of approach in some code I wrote pertaining to wrapping code in asynchronous blocks. Here is a link to the code if you are interested. It worked out nicely provide simple and reusable code blocks for a consumer to wrap around any code that needed to be run in the background within a Jersey controller.
+I recently used this type of approach in some code I wrote pertaining to wrapping code in asynchronous blocks. Here is a link to the code if you are interested. It worked out nicely provide simple and reusable code blocks for a consumer to wrap around any code that needed to be run in the background within a Jersey controller: [Async code link](https://github.com/enelson/enelson.github.io/wiki/Asynchronous-code-blocks)
 
 ## Conclusion
 
