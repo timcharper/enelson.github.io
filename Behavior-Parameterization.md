@@ -21,7 +21,7 @@ public class AnimalContainer {
     public List<Animal> filter() {
         List<Animal> results = new ArrayList<>();
         for(Animal animal : animals) {
-            if(animals.getType() == 'Elephant')
+            if(animal.getType() == 'Dog')
                 results.add(animal);
         }
         return results;
@@ -35,3 +35,17 @@ public class AnimalContainer {
     }
 }
 ```
+
+The filter method is great, except for the fact that it is completely inflexible.  What if you wanted to filter out dogs that were of a certain weight? Write another method with like this:
+
+```
+public List<Animal> filter(int weight);
+```
+
+And then later, what if someone wanted to filter out dogs of a certain weight *AND* a certain color? You see where this is going. The combinations can become unwieldy and you can't resort to writing a new method each time you need more options.
+
+Plus, what if we want to filter out animals of type 'Cat'? What will we do? Write a new method called `filterCats`? And then write more methods for cat filters with many filtering options?
+
+## Lambdas
+
+## 
