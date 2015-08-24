@@ -12,6 +12,7 @@ This is what the code was looking like initially:
 ```java
 @Path("/")
 public class MyController {
+    @Path("/one")
     @GET
     public void asyncGetData(@Suspended AsyncResponse asyncResponse) {
         new Thread(new Runnable() {
@@ -22,5 +23,35 @@ public class MyController {
             }
          }).start();
     }
+
+    @Path("/two")
+    @GET
+    public void asyncGetDataAgain(@Suspended AsyncResponse asyncResponse) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String result = anotherVeryExpensiveOperation();
+                asyncResponse.resume(result);
+            }
+         }).start();
+    }
+}
+```
+
+This was a prime candidate for parameterization of behavior. I wanted to get rid of the repetative Thread/Runnable code, and allow the user to pass in their controller behavior to a common method. So I created an abstract base class that all controllers could extend from, and a shared method that could wrap code into an asycn block:
+
+```
+public abstract class BaseController {
+
+    private ExecutorService executor = Executors.newFixedThreadPool(10);
+
+    protected  <T> void async(AsyncResponse asyncResponse, Consumer<AsyncResponse> f) {
+        executor.submit(() -> f.accept(asyncResponse));
+    }
+
+    protected  <T> void async(AsyncResponse asyncResponse, T data, BiConsumer<AsyncResponse, T> f) {
+        executor.submit(() -> f.accept(asyncResponse, data));
+    }
+
 }
 ```
