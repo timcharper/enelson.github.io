@@ -68,7 +68,7 @@ This worked out great. Now I could simplify my controller code to something like
 
 ```java
 @Path("/")
-public class MyController {
+public class MyController extends BaseController {
     @Path("/one")
     @GET
     public void asyncGetData(@Suspended AsyncResponse asyncResponse) {
