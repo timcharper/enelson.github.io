@@ -42,7 +42,7 @@ This was a prime candidate for parameterization of behavior. I wanted to get rid
 
 ```java
 public abstract class BaseController {
-    protected  <T> void async(AsyncResponse asyncResponse, Consumer<AsyncResponse> f) {
+    protected void async(AsyncResponse asyncResponse, Consumer<AsyncResponse> f) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -51,7 +51,7 @@ public abstract class BaseController {
         }).start();
     }
 
-    protected  <T> void async(AsyncResponse asyncResponse, T data, BiConsumer<AsyncResponse, T> f) {
+    protected <T> void async(AsyncResponse asyncResponse, T data, BiConsumer<AsyncResponse, T> f) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -64,7 +64,7 @@ public abstract class BaseController {
 
 This worked out great. Now I could simplify my controller code to something like this:
 
-```
+```java
 @Path("/")
 public class MyController {
     @Path("/one")
