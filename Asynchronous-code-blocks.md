@@ -12,13 +12,15 @@ This is what the code was looking like initially:
 ```java
 @Path("/")
 public class MyController {
+    private Service myService;
+
     @Path("/one")
     @GET
     public void asyncGetData(@Suspended AsyncResponse asyncResponse) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String result = veryExpensiveOperation();
+                String result = myService.veryExpensiveOperation();
                 asyncResponse.resume(result);
             }
          }).start();
@@ -30,7 +32,7 @@ public class MyController {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String result = anotherVeryExpensiveOperation(request);
+                String result = myService.anotherVeryExpensiveOperation(request);
                 asyncResponse.resume(result);
             }
          }).start();
@@ -69,11 +71,13 @@ This worked out great. Now I could simplify my controller code to something like
 ```java
 @Path("/")
 public class MyController extends BaseController {
+    private Service myService;
+
     @Path("/one")
     @GET
     public void asyncGetData(@Suspended AsyncResponse asyncResponse) {
         async(asyncResponse, (asyncResp) -> {
-            String result = veryExpensiveOperation();
+            String result = myService.veryExpensiveOperation();
             asyncResp.resume(result);
         });
     }
@@ -82,7 +86,7 @@ public class MyController extends BaseController {
     @POST
     public void asyncGetDataAgain(MyRequest request, @Suspended AsyncResponse asyncResponse) {
         async(asyncResponse, request, (asyncResp, request) -> {
-            String result = anotherVeryExpensiveOperation(request);
+            String result = myService.anotherVeryExpensiveOperation(request);
             asyncResponse.resume(result);
         });
     }
