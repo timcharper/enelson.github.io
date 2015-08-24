@@ -96,11 +96,11 @@ public abstract class BaseController {
 
     private ExecutorService executor = Executors.newFixedThreadPool(10);
 
-    protected  <T> void async(AsyncResponse asyncResponse, Consumer<AsyncResponse> f) {
+    protected void async(AsyncResponse asyncResponse, Consumer<AsyncResponse> f) {
         executor.submit(() -> f.accept(asyncResponse));
     }
 
-    protected  <T> void async(AsyncResponse asyncResponse, T data, BiConsumer<AsyncResponse, T> f) {
+    protected <T> void async(AsyncResponse asyncResponse, T data, BiConsumer<AsyncResponse, T> f) {
         executor.submit(() -> f.accept(asyncResponse, data));
     }
 
