@@ -38,7 +38,9 @@ public class MyController {
 }
 ```
 
-This was a prime candidate for parameterization of behavior. I wanted to get rid of the repetative Thread/Runnable code, and allow the user to pass in their controller behavior to a common method. So I created an abstract base class that all controllers could extend from, and a shared method that could wrap code into an asycn block:
+## Progressing
+
+This was a prime candidate for parameterization of behavior. I wanted to get rid of the repetitive Thread/Runnable code, and allow the user to pass in their controller behavior to a common method. So I created an abstract base class that all controllers could extend from, and a shared method that could wrap code into an async block:
 
 ```java
 public abstract class BaseController {
@@ -88,6 +90,8 @@ public class MyController {
 ```
 
 No more boilerplate and ugly repetative threading code. That code was abstracted away into our `BaseController`, and we could simply wrap our controller login in a nice `async()` block. We made the `async()` method generic by using behavior parameterization using the functional interfaces of `Consumer<T>` and `BiConsumer<T,U>`. 
+
+## Refining
 
 One more efficiency adjustment was made in the `BaseController` by replacing the raw Thread/Runnable code with an ExecutorService. Executors are much more efficient and managing and scheduling threads, and they help remove the complexity of doing this manually, which manual management is not a good idea in production systems. The change made our `BaseController` even cleaner to read:
 
