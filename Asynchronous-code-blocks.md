@@ -86,3 +86,23 @@ public class MyController {
     }
 }
 ```
+
+No more boilerplate and ugly repetative threading code. That code was abstracted away into our BaseController, and we could simply wrap our controller login in a nice `async()` block. We made the `async()` method generic by using behavior parameterization using the functional interfaces of `Consumer<T>` and `BiConsumer<T,U>`. 
+
+One more efficiency adjustment was made in the BaseController by replacing the raw Thread/Runnable code with an ExecutorService. This service gave us a ThreadPool which is much more efficient at scheduling/managing our threading resources. The change made our BaseController even cleaner to read:
+
+```
+public abstract class BaseController {
+
+    private ExecutorService executor = Executors.newFixedThreadPool(10);
+
+    protected  <T> void async(AsyncResponse asyncResponse, Consumer<AsyncResponse> f) {
+        executor.submit(() -> f.accept(asyncResponse));
+    }
+
+    protected  <T> void async(AsyncResponse asyncResponse, T data, BiConsumer<AsyncResponse, T> f) {
+        executor.submit(() -> f.accept(asyncResponse, data));
+    }
+
+}
+```
