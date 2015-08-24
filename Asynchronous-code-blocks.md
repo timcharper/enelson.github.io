@@ -25,12 +25,12 @@ public class MyController {
     }
 
     @Path("/two")
-    @GET
-    public void asyncGetDataAgain(@Suspended AsyncResponse asyncResponse) {
+    @POST
+    public void asyncGetDataAgain(MyRequest request, @Suspended AsyncResponse asyncResponse) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String result = anotherVeryExpensiveOperation();
+                String result = anotherVeryExpensiveOperation(request);
                 asyncResponse.resume(result);
             }
          }).start();
@@ -42,6 +42,14 @@ This was a prime candidate for parameterization of behavior. I wanted to get rid
 
 ```java
 public abstract class BaseController {
+    protected  <T> void async(AsyncResponse asyncResponse, Consumer<AsyncResponse> f) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                f.accept(asyncResponse);
+            }
+        }).start();
+    }
 
     protected  <T> void async(AsyncResponse asyncResponse, T data, BiConsumer<AsyncResponse, T> f) {
         new Thread(new Runnable() {
@@ -51,6 +59,30 @@ public abstract class BaseController {
             }
          }).start();
     }
+}
+```
 
+This worked out great. Now I could simplify my controller code to something like this:
+
+```
+@Path("/")
+public class MyController {
+    @Path("/one")
+    @GET
+    public void asyncGetData(@Suspended AsyncResponse asyncResponse) {
+        async(asyncResponse, (asyncResp) -> {
+            String result = veryExpensiveOperation();
+            asyncResp.resume(result);
+        });
+    }
+
+    @Path("/two")
+    @POST
+    public void asyncGetDataAgain(MyRequest request, @Suspended AsyncResponse asyncResponse) {
+        async(asyncResponse, request, (asyncResp, request) -> {
+            String result = anotherVeryExpensiveOperation(request);
+            asyncResponse.resume(result);
+        });
+    }
 }
 ```
