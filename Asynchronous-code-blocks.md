@@ -40,17 +40,16 @@ public class MyController {
 
 This was a prime candidate for parameterization of behavior. I wanted to get rid of the repetative Thread/Runnable code, and allow the user to pass in their controller behavior to a common method. So I created an abstract base class that all controllers could extend from, and a shared method that could wrap code into an asycn block:
 
-```
+```java
 public abstract class BaseController {
 
-    private ExecutorService executor = Executors.newFixedThreadPool(10);
-
-    protected  <T> void async(AsyncResponse asyncResponse, Consumer<AsyncResponse> f) {
-        executor.submit(() -> f.accept(asyncResponse));
-    }
-
     protected  <T> void async(AsyncResponse asyncResponse, T data, BiConsumer<AsyncResponse, T> f) {
-        executor.submit(() -> f.accept(asyncResponse, data));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                f.accept(asyncResponse, data);
+            }
+         }).start();
     }
 
 }
