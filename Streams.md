@@ -1,7 +1,5 @@
 # Streams
 
-> *This is a test*
-
 ## Life before streams
 
 ## What are streams
