@@ -2,21 +2,15 @@
 
 ![](http://geeknizer.com/wp-content/uploads/2013/07/lambda-java8.jpg)
 
-## What it is
+## Overview
 
-### Concept similar to type parameterization
+Behavior parameterization is a technique to improve code modularity by allowing the caller to pass custom **behavior** to a method as a **parameter**. Hence the name: behavior parameterization.
 
-Behavior parameterization is far less scary than it sounds. It espouses the same concepts that type parameterization does. Type parameterization (generics) is, in essence, a place holder for types in a class/method/field. The writer is saying that they don't want to define the type here, and allow the consumer to define the type later. This is the case when the class/method/field behavior doesn't rely on the type to define its behavior. So flexibility is given to the consumer to use whatever type they like, or at least within the bound of the type definition:
+In this article, I will show you how it is possible to improve the design using **behavior parameterization** first by using *Functional Interfaces*, then further improve the example using Java 8 lambda expressions.
 
-```java
-public <T> T doWork(T obj);
-```
+### The Problem: Implementing Every Possible Behavior is Verbose and Impossible
 
-Here, `doWork()` can take any user-defined type, because the type has no bearing on the behavior of the method. A good example of this is the `List<T>` type. A list's behavior works the same no matter what type it contains. So it doesn't make sense for the writer of List to hard-code what the list can contain. Let the consumer of `List` define that later.
-
-### Correlation
-
-To broach the subject of behavior parameterization, let's start with a simple example. Lets say we have a class called `AnimalContainer` which contains many types of animals. We may want to have a simple method called `filter()` that allows us to filter out certain types of animals.
+Suppose we have a class called `AnimalContainer` which contains many types of animals, and this class has a simple method called `filter()` returns all of the animals that are of type `DOG`.
 
 ```java
 public class AnimalContainer {
@@ -33,7 +27,7 @@ public class AnimalContainer {
 }
 ```
 
-The filter method is great, except for the fact that it is completely inflexible.  What if you wanted to filter out dogs that were below a certain weight? Write another method with like this:
+Now, let's suppose the caller of this function would also like to filter out dogs that were below a certain weight; We'd have to write another method with like this:
 
 ```java
 public List<Animal> filter(int weight) {
@@ -46,21 +40,17 @@ public List<Animal> filter(int weight) {
 }
 ```
 
-But what if someone wanted to filter if the weight was `>=` than the weight, not less than? And then later, what if someone wanted to filter out dogs of a certain weight *AND* a certain color? You see where this is going. The combinations can become unwieldy and you can't resort to writing a new method each time you need more options.
+Now, suppose you wanted to filter if the weight was `>=` than the weight, not less than? And then, later, suppose you needed filter out dogs of a certain weight *AND* a certain color? Oh, and let's filter cats, and then let's also support a handful of additional cat filtering options. Pretty soon, we have pages and pages full of filter methods to test and maintain; do we feel happy? The answer is no.
 
-Plus, what if we want to filter out animals of type 'Cat'? What will we do? Write a new method called `filterCats`? And then write more methods for cat filters with many filtering options?
+Since we've seen that we can't possibly think up all the scenarios that a user would need to filter animals, wouldn't it be great if we could just write a single `filter` method, and then let THEM provide the behavior via a parameter? Kind of like, **behavior parameterization**?
 
-What would be nice is to take an approach similar to what we were doing with type parameterization where we put in a place holder for the filter behavior and let the user fill in the details later. We've seen that we can't possibly think up all the scenarios that a user would need for our methods, so why not just allow them to tell us? Enter in behavior parameterization. 
+## Enter Functional Interfaces as Behavior Parameters
 
-But how does one do this? Generics make this easy for types, but how do you put a place holder in for behavior? This is facilitated by functional interfaces. 
-
-## Functional Interfaces
-
-A functional interface is very simple: it's just an interface with one non-default and non-static method. Seems kind of weird right? Like a waste of typing to create an interface with just one method. But it'll soon be clear why this structure is important when we get to the section of lambda expressions. 
+A functional interface is very simple: it's just an interface with one non-default, non-static method. Seems kind of weird right? Like a waste of typing to create an interface with just one method. But it'll soon be clear why this structure is important when we get to the section of lambda expressions.
 
 You may not realize it, but you've already been using functional interfaces. Some examples are: `Runnable` and `Callable`, each containing just one method. Java 8 introduced some very important functional interfaces: `Function<T,R>`, `Predicate<T>`, `Consumer<T>`, `Supplier<T>` to name just a few.
 
-In order to look for a better definition of our `filter()` method, we're going to focus on the `Predicate<T>` interface. This interface has a single non-default and non-static method defined as: 
+In order to look for a better definition of our `filter()` method, we're going to focus on the `Predicate<T>` interface. This interface has a single non-default, non-static method defined as:
 
 ```java
 boolean test(T t);
@@ -136,18 +126,9 @@ And voila! You can create any powerful combination of filters you'd like.
 
 <img src="https://keefcode.files.wordpress.com/2013/12/lambda.png" width="340" height="180"/>
 
-This is all well and good. We've started to see the power of behavior parameterization by deferring the definitions and combinations of business logic to the consumer. Not only is our code cleaner by providing more generic methods, but we give the consumer the power to use it however they like. But lets go ahead and admit that the use of `Predicate<T>` anonymous classes is pretty verbose and clunky. Such has been the curse of Java for years until the advent of Java 8 and it's introduction of lambda expressions. 
+We've seen the power of behavior parameterization by deferring the definitions and combinations of business logic to the consumer; however the use of `Predicate<T>` anonymous classes are verbose and clunky. Such has been the curse of Java for years until the advent of Java 8 and it's introduction of lambda expressions.
 
-Lambda expressions allow us to replace the verbose anonymous class definitions with a succinct expression. Back to why functional interfaces are important: lambda expressions can't be used just anywhere in Java. They can only be used in place of an anonymous class definition for a functional interface. The reason that they need to be used in conjunction with functional interfaces is that the compiler wouldn't know what method the lambda expression was replacing if there were several methods with the same signature. What if an interface had two methods that looked like this:
-
-```java
-public boolean passes(T t);
-public boolean notPasses(T t);
-```
-
-The compiler would have no indication which method the lambda expression was meant to replace. This is why they must be used with functional interfaces which define only one non-default and non-static method. 
-
-Okay, enough talking! What do lambdas look like? Here is what our new use of the filter method could look like:
+Lambda expressions allow us to replace the verbose anonymous class definitions with a succinct expression. Let's see our example from above using a lambda expression:
 
 ```java
 AnimalContainer container = ...
@@ -161,12 +142,39 @@ List<Animal> filteredAnimals = container.filter(
 );
 ```
 
-Umm...wow! So much better! So much more succinct. So much more readable. So the generic form of a lambda expression for a `Predicate<T>` is: `(T) -> boolean`. Another example that takes a parameter and returns a user-defined type is `Function<T,R>`, or: `(T) -> R`.
+Umm...wow! That is much more readable.
 
-I recently used this type of approach in some code I wrote using the `BiConsumer<T,U>` interface, pertaining to wrapping code in asynchronous blocks. It worked out nicely to provide a simple and reusable construct for a consumer to wrap around any code that needed to be run in the background within a Jersey controller. Here is a link to the code if you are interested: [Async code wrapper](https://github.com/enelson/enelson.github.io/wiki/Asynchronous-code-blocks)
+## Lambda Expressions and Functional Interfaces
+
+One downside of lambda expressions is not all libraries accept them. However, Java will **automagically convert** a lambda expression to generate an anonymous class definition for a functional interface. And, this leads me to my next point: for this conversion to happen, it's imperative that a functional interface only have one method.
+
+Suppose you are the compiler for a moment, and you're given a lambda expression which takes a `T` and returns a `boolean`. Use that lambda expression to implement a functional interface which contains the following methods:
+
+```java
+public boolean passes(T t);
+public boolean notPasses(T t);
+```
+
+Can't decide what to do? Neither can the Java compiler. There is no indication which method the lambda expression was meant to replace. This is why they must be used with functional interfaces which define **only one** non-default, non-static method.
+
+The generic form of a lambda expression for a `Predicate<T>` is: `(T) -> boolean`. Another example that takes a parameter and returns a user-defined type is `Function<T,R>`, or: `(T) -> R`.
+
+### The Correlation Between Behavior Parameters and Type Parameters
+
+Type parameterization (generics) is, in essence, a place holder for types in a class/method/field. The writer is saying that they don't want to define the type here, and allow the consumer to define the type later, vastly improving flexibility as the consumer can use whatever type they like (or, at least within the bound of the type definition):
+
+```java
+public <T> T doWork(T obj);
+```
+
+Here, `doWork()` can take any user-defined type, because the type has no bearing on the behavior of the method. A good example of this is the `List<T>` type. A list's behavior works the same no matter what type it contains. So it doesn't make sense for the writer of List to hard-code what the list can contain. Let the consumer of `List` define that later.
+
+As we've shown above, behavior parameterization does **exactly** the same thing, but with behavior. The writer is saying that they don't want to define the behavior here, and allow the conumser to define the behavior later, vastly improving flexibility as the consumer can use whatever behavior they like.
 
 ## Conclusion
 
-Sorry if this was a TL;DR discussion of behavioral parameterization, but I felt that the concepts written about here were important to build up to understanding why generic behavior is important; and then second, how you can accomplish this. These concepts can be used in innumerable cases and in many different circumstances. And each functional interface provides different types of behavior. I would encourage you to read any articles relating to this subject as it can lead to clean, powerful, reusable, composable code. And in the end, isn't this a goal that all of us "pragmatic" programmers aspire to? 
+Behavior parameterization improves the modularity of our code by allowing us to write more generic methods and give the consumer the power to provide behavior that we didn't even think of yet. It's benefits are parallel to type parameterization.
 
-Thanks so much for taking the time to read this article, and please provide any feedback for me relating to anything that is unclear in my explanations, or anything that is wrong.
+I would encourage you to use Behavior Parameterization in your code as it can lead to clean, powerful, reusable, composable code. And in the end, isn't this a goal that all of us "pragmatic" programmers aspire to?
+
+Further reading: [Strategy Pattern](http://c2.com/cgi/wiki?StrategyPattern)
