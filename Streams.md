@@ -1,6 +1,6 @@
 # Streams
 
-> This is a test
+> *This is a test*
 
 ## Life before streams
 
